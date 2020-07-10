@@ -26,3 +26,6 @@ AND tmp.version > 1;
 
 DROP TABLE nds.films_tmp;
 VACUUM;
+
+ALTER TABLE nds.store ADD COLUMN version smallint default 1;
+UPDATE nds.store SET date_close = date_close + 1 WHERE date_close <> '2999-12-31';
