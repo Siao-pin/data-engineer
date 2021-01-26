@@ -20,7 +20,7 @@ SET row_security = off;
 -- Data for Name: book_to_author; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.book_to_author (book_id, author_id) FROM stdin;
+COPY nds.book_to_author (book_id, author_id) FROM stdin;
 1	260
 2	260
 3	260
