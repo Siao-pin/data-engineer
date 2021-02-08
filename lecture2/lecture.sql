@@ -300,6 +300,7 @@ CREATE TABLE fact.sale_item (
     date_key int not null references dim.date(id),
     customer_key int not null references dim.customer(id),
     product_key int references dim.product(id),
+    store_key int references dim.store(id),
     dt timestamp not null,
     transaction_id int not null,
     line_number smallint not null,
