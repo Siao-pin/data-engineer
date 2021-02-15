@@ -29,3 +29,33 @@ VACUUM;
 
 ALTER TABLE nds.store ADD COLUMN version smallint default 1;
 UPDATE nds.store SET date_close = date_close + 1 WHERE date_close <> '2999-12-31';
+
+ALTER TABLE nds.book ADD COLUMN version int DEFAULT 1;
+CREATE TABLE nds.book_tmp
+AS
+SELECT id, start_ts, row_number() OVER (PARTITION BY book_key ORDER BY start_ts) AS version
+FROM nds.book;
+
+VACUUM;
+UPDATE nds.book SET version = tmp.version
+FROM nds.book_tmp tmp
+WHERE nds.book.id = tmp.id AND nds.book.start_ts = tmp.start_ts
+AND tmp.version > 1;
+
+DROP TABLE nds.book_tmp;
+VACUUM;
+
+ALTER TABLE nds.music ADD COLUMN version int DEFAULT 1;
+CREATE TABLE nds.music_tmp
+AS
+SELECT id, start_ts, row_number() OVER (PARTITION BY music_key ORDER BY start_ts) AS version
+FROM nds.music;
+
+VACUUM;
+UPDATE nds.music SET version = tmp.version
+FROM nds.music_tmp tmp
+WHERE nds.music.id = tmp.id AND nds.music.start_ts = tmp.start_ts
+AND tmp.version > 1;
+
+DROP TABLE nds.book_tmp;
+VACUUM;
