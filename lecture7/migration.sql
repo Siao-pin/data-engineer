@@ -18,7 +18,6 @@ ALTER TABLE nds.music ALTER COLUMN status DROP NOT NULL;
 ALTER TABLE nds.music ALTER COLUMN start_ts DROP NOT NULL;
 ALTER TABLE nds.music ALTER COLUMN end_ts DROP NOT NULL;
 
-UPDATE nds.films SET end_ts = end_ts + 1 WHERE end_ts <> '2999-12-31';
 UPDATE nds.films SET title = replace(trim(title), '\n', '');
 
 ALTER TABLE nds.films ADD COLUMN version int DEFAULT 1;
@@ -30,8 +29,7 @@ FROM nds.films;
 VACUUM;
 UPDATE nds.films SET version = tmp.version
 FROM nds.films_tmp tmp
-WHERE nds.films.id = tmp.id AND nds.films.start_ts = tmp.start_ts
-AND tmp.version > 1;
+WHERE nds.films.id = tmp.id AND nds.films.start_ts = tmp.start_ts;
 
 DROP TABLE nds.films_tmp;
 VACUUM;
@@ -48,8 +46,7 @@ FROM nds.book;
 VACUUM;
 UPDATE nds.book SET version = tmp.version
 FROM nds.book_tmp tmp
-WHERE nds.book.id = tmp.id AND nds.book.start_ts = tmp.start_ts
-AND tmp.version > 1;
+WHERE nds.book.id = tmp.id AND nds.book.start_ts = tmp.start_ts;
 
 DROP TABLE nds.book_tmp;
 VACUUM;
@@ -63,8 +60,7 @@ FROM nds.music;
 VACUUM;
 UPDATE nds.music SET version = tmp.version
 FROM nds.music_tmp tmp
-WHERE nds.music.id = tmp.id AND nds.music.start_ts = tmp.start_ts
-AND tmp.version > 1;
+WHERE nds.music.id = tmp.id AND nds.music.start_ts = tmp.start_ts;
 
 DROP TABLE nds.book_tmp;
 VACUUM;
